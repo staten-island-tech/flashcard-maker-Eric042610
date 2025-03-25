@@ -1,4 +1,4 @@
-import json
+""" import json
 import random
 
 def student_mode():
@@ -29,4 +29,4 @@ def student_mode():
         print(f"Current Score: {score} | Current Streak: {streak}")
 
     print(f"\nFinal Score: {score}")
-    print(f"Longest Streak: {max_streak}")
+    print(f"Longest Streak: {max_streak}") """
