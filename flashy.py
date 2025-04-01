@@ -30,3 +30,5 @@ def student_mode():
 
     print(f"\nFinal Score: {score}")
     print(f"Longest Streak: {max_streak}") """
+
+
