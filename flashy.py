@@ -38,7 +38,7 @@ def student_mode():
         print("\nQuestion:", q)
         guess = input("Your answer: ")
         if guess.strip().lower() == a.strip().lower():
-            print("✅ Correct!")
+            print("Correct!")
             score += 1
         else:
             print(f"Wrong Correct answer: {a}")
