@@ -1,58 +1,67 @@
+
 import json
-import os
-FILE = "flashy.json"
 
-def load_cards():
-    if os.path.exists(FILE):
-        with open(FILE, "r") as f:
-            return json.load(f)
-    return {}
+FILENAME = 'FlashCards.json'
 
-def save_cards(cards):
-    with open(FILE, "w") as f:
-        json.dump(cards, f, indent=2)
+def load_flashcards():
+    try:
+        with open(FILENAME, 'r') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return {}
+
+def save_flashcards(flashcards):
+    with open(FILENAME, 'w') as file:
+        json.dump(flashcards, file, )
 
 def teacher_mode():
-    cards = load_cards()
-    print("Type 'q' to quit.")
+    flashcards = load_flashcards()
+    print("Enter your flashcards (leave question blank to stop):")
     while True:
-        question = input("Enter a word or phrase: ")
-        if question.lower() == 'q':
+        question = input("Enter a word: ")
+        if question == "":
             break
         answer = input("Enter the answer: ")
-        if answer.lower() == 'q':
-            break
-        cards[question] = answer
-        print(f"Saved: {question} → {answer}")
-    save_cards(cards)
-    print("All flashcards saved")
+        flashcards[question] = answer
+        print("Flashcard added")
+    save_flashcards(flashcards)
+    print("saved")
 
 def student_mode():
-    cards = load_cards()
-    if not cards:
-        print("No flashcards yet. Use Teacher Mode first.")
+    flashcards = load_flashcards()
+    if not flashcards:
+        print("No flashcards found. Teacher need make.")
         return
 
+    print("Starting Quiz.'exit' to stop.")
+    questions = list(flashcards.items())
     score = 0
-    for q, a in cards.items():
-        print("\nQuestion:", q)
-        guess = input("Your answer: ")
-        if guess.strip().lower() == a.strip().lower():
-            print("Correct!")
-            score += 1
+    streak = 0
+
+    for question, correct_answer in questions:
+        answer = input(f"{question} = ")
+        if answer.lower() == "exit":
+            break
+        if answer.lower() == correct_answer.lower():
+            streak += 1
+            bonus = streak - 1
+            score += 1 + bonus
+            print(f"Correct (Streak: {streak}, Bonus: {bonus})")
         else:
-            print(f"Wrong Correct answer: {a}")
-    print(f"\nYou got {score} out of {len(cards)} right.")
+            print(f"Wrong The correct answer was: {correct_answer}")
+            streak = 0 
+
+    print(f"\nQuiz Finished! Your final score: {score}")
 
 def main():
-    mode = input("Choose mode (teacher/student): ").lower()
-    if mode == "teacher":
+    print("Welcome to Flashcard")
+    mode = input("Choose mode (teacher/student): ").strip().lower()
+    if mode == 'teacher':
         teacher_mode()
-    elif mode == "student":
+    elif mode == 'student':
         student_mode()
     else:
-        print("Please enter 'teacher' or 'student'.")
+        print("Invalid mode. Please choose 'teacher' or 'student'.")
+
 if __name__ == "__main__":
     main()
-
-
